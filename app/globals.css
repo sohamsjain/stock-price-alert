@@ -120,3 +120,47 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Shadcn Slate Theme Scrollbar (Light + Dark Mode) */
+.scrollbar-slate {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #94a3b8 #f8fafc; /* thumb track (slate-400 / slate-50) */
+}
+
+/* Webkit browsers (Chrome, Edge, Safari) */
+.scrollbar-slate::-webkit-scrollbar {
+  height: 8px;  /* horizontal */
+  width: 8px;   /* vertical */
+}
+
+.scrollbar-slate::-webkit-scrollbar-track {
+  background: #f8fafc; /* slate-50 */
+  border-radius: 4px;
+}
+
+.scrollbar-slate::-webkit-scrollbar-thumb {
+  background-color: #94a3b8; /* slate-400 */
+  border-radius: 4px;
+}
+
+.scrollbar-slate::-webkit-scrollbar-thumb:hover {
+  background-color: #64748b; /* slate-500 */
+}
+
+/* Dark mode using Tailwind's dark class on <html> or body */
+.dark .scrollbar-slate {
+  scrollbar-color: #64748b #1e293b; /* thumb / track (slate-500 / slate-800) */
+}
+
+.dark .scrollbar-slate::-webkit-scrollbar-track {
+  background: #1e293b; /* slate-800 */
+}
+
+.dark .scrollbar-slate::-webkit-scrollbar-thumb {
+  background-color: #64748b; /* slate-500 */
+}
+
+.dark .scrollbar-slate::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8; /* slate-400 */
+}
+
