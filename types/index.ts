@@ -59,30 +59,30 @@ export interface Trade {
   last_price: number;
   status: TradeStatus;
   side: TradeSide;
-  type?: TradeType;
-  notes?: string;
+  type?: TradeType | null;
+  notes?: string | null;
   entry: number;
-  stoploss?: number;
-  target?: number;
-  timeframe?: Timeframe;
-  score?: number;
-  entry_x?: Date;
-  stoploss_x?: Date;
-  target_x?: Date;
-  entry_eta?: Date;
-  stoploss_eta?: Date;
-  target_eta?: Date;
-  entry_at?: Date;
-  stoploss_at?: Date;
-  target_at?: Date;
+  stoploss?: number | null;
+  target?: number | null;
+  timeframe?: Timeframe | null;
+  score?: number | null;
+  entry_x?: Date | null;
+  stoploss_x?: Date | null;
+  target_x?: Date | null;
+  entry_eta?: Date | null;
+  stoploss_eta?: Date | null;
+  target_eta?: Date | null;
+  entry_at?: Date | null;
+  stoploss_at?: Date | null;
+  target_at?: Date | null;
   created_at: Date;
-  edited_at?: Date;
+  edited_at?: Date | null;
   updated_at: Date;
-  status_updated_at?: Date;
+  status_updated_at?: Date | null;
   ticker: Ticker;
-  risk_reward_ratio?: number;
-  risk_per_unit?: number;
-  reward_per_unit?: number;
+  risk_reward_ratio?: number | null;
+  risk_per_unit?: number | null;
+  reward_per_unit?: number | null;
   tags: Tag[];
 }
 
@@ -91,20 +91,20 @@ export interface TradeCreateRequest {
   ticker_id: string;
   side: TradeSide;
   entry: number;
-  stoploss?: number;
-  target?: number;
-  timeframe?: Timeframe;
-  notes?: string;
-  score?: number;
-  entry_x?: string;
-  stoploss_x?: string;
-  target_x?: string;
+  stoploss?: number | null;
+  target?: number | null;
+  timeframe?: Timeframe | null;
+  notes?: string | null;
+  score?: number | null;
+  entry_x?: string | null;
+  stoploss_x?: string | null;
+  target_x?: string | null;
   tags?: TagCreateRequest[];
 }
 
 export interface TradeUpdateRequest extends Partial<TradeCreateRequest> {
   tags?: TagCreateRequest[];
-  type?: TradeType;
+  type?: TradeType | null;
 }
 
 // API Response types

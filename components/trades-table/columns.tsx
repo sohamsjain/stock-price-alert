@@ -131,7 +131,7 @@ export const createTradesColumns = ({
         const side = row.getValue('side') as string;
         return (
           <div className="flex flex-col items-end">
-            <Badge variant="outline" className={cn(getSideColor(side), 'font-normal text-xs rounded px-2 py-1')}>
+            <Badge variant="outline" className={cn(getSideColor(side), 'font-normal text-[10px] rounded px-1 py-0.5')}>
               {side}
             </Badge>
           </div>
@@ -150,7 +150,7 @@ export const createTradesColumns = ({
         const status = row.getValue('status') as string;
         return (
           <div className="flex flex-col items-end">
-            <Badge variant="outline" className={cn(getStatusColor(status), 'font-normal text-xs rounded px-2 py-1')}>
+            <Badge variant="outline" className={cn(getStatusColor(status), 'font-normal text-[10px] rounded px-1 py-0.5')}>
               {status}
             </Badge>
           </div>
@@ -273,7 +273,7 @@ export const createTradesColumns = ({
         const timeframe = row.getValue('timeframe') as string;
         return timeframe ? (
           <div className="flex flex-col items-end">
-            <Badge variant="secondary" className="text-xs font-normal rounded text-primary hover:text-primary px-2 py-1">
+            <Badge variant="secondary" className="text-[10px] font-normal rounded text-primary hover:text-primary px-1 py-0.5">
               {timeframe}
             </Badge>
           </div>

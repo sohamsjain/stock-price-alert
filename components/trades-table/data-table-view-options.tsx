@@ -33,7 +33,7 @@ export function DataTableViewOptions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[200px]">
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="max-h-[300px] overflow-y-auto scrollbar-slate">
           {table
@@ -46,7 +46,7 @@ export function DataTableViewOptions<TData>({
               return (
                 <DropdownMenuCheckboxItem
                   key={column.id}
-                  className="capitalize"
+                  className="capitalize text-xs font-normal text-muted-foreground"
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
