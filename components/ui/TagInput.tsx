@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { X, Plus, Loader2 } from 'lucide-react';
+import * as PopoverPrimitive from '@radix-ui/react-popover';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -13,11 +14,6 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import { useDebounceSearch } from '@/hooks/useDebounceSearch';
 import { tagsApi } from '@/lib/api/tags';
 import { Tag } from '@/types';
@@ -39,6 +35,7 @@ export function TagInput({
 }: TagInputProps) {
   const [inputValue, setInputValue] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const triggerRef = React.useRef<HTMLDivElement>(null);
 
   const {
     query,
@@ -113,10 +110,10 @@ export function TagInput({
         </div>
       )}
 
-      {/* Tag Input */}
-      <Popover open={open && !disabled} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <div className="relative">
+      {/* Tag Input with Portal */}
+      <PopoverPrimitive.Root open={open && !disabled} onOpenChange={setOpen}>
+        <PopoverPrimitive.Trigger asChild>
+          <div className="relative" ref={triggerRef}>
             <Input
               value={inputValue}
               onChange={(e) => handleInputChange(e.target.value)}
@@ -136,65 +133,72 @@ export function TagInput({
               <Plus className="h-4 w-4" />
             </Button>
           </div>
-        </PopoverTrigger>
+        </PopoverPrimitive.Trigger>
         
-        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
-          <Command shouldFilter={false}>
-            <CommandList>
-              {isLoading && (
-                <div className="flex items-center justify-center py-4">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="ml-2 text-sm text-muted-foreground">Searching...</span>
-                </div>
-              )}
-              
-              {!isLoading && availableTags.length === 0 && query.length > 0 && (
-                <div className="p-4 text-center">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    No existing tags found.
-                  </p>
-                  <Button
-                    size="sm"
-                    onClick={() => addTag(query)}
-                    className="w-full"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create "{query}"
-                  </Button>
-                </div>
-              )}
-
-              {!isLoading && availableTags.length > 0 && (
-                <CommandGroup heading="Existing Tags">
-                  {availableTags.map((tag) => (
-                    <CommandItem
-                      key={tag.id}
-                      value={tag.name}
-                      onSelect={() => handleSelectTag(tag)}
-                      className="cursor-pointer"
+        <PopoverPrimitive.Portal>
+          <PopoverPrimitive.Content
+            className="z-[9999] w-80 rounded-md border bg-popover p-0 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+            align="start"
+            side="bottom"
+            sideOffset={4}
+          >
+            <Command shouldFilter={false}>
+              <CommandList>
+                {isLoading && (
+                  <div className="flex items-center justify-center py-4">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span className="ml-2 text-sm text-muted-foreground">Searching...</span>
+                  </div>
+                )}
+                
+                {!isLoading && availableTags.length === 0 && query.length > 0 && (
+                  <div className="p-4 text-center">
+                    <p className="text-sm text-muted-foreground mb-2">
+                      No existing tags found.
+                    </p>
+                    <Button
+                      size="sm"
+                      onClick={() => addTag(query)}
+                      className="w-full"
                     >
-                      <Plus className="mr-2 h-4 w-4" />
-                      {tag.name}
-                    </CommandItem>
-                  ))}
-                  {query.trim() && !availableTags.find(tag => 
-                    tag.name.toLowerCase() === query.trim().toLowerCase()
-                  ) && (
-                    <CommandItem
-                      value={query}
-                      onSelect={() => addTag(query)}
-                      className="cursor-pointer border-t"
-                    >
-                      <Plus className="mr-2 h-4 w-4" />
+                      <Plus className="h-4 w-4 mr-2" />
                       Create "{query}"
-                    </CommandItem>
-                  )}
-                </CommandGroup>
-              )}
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
+                    </Button>
+                  </div>
+                )}
+
+                {!isLoading && availableTags.length > 0 && (
+                  <CommandGroup heading="Existing Tags">
+                    {availableTags.map((tag) => (
+                      <CommandItem
+                        key={tag.id}
+                        value={tag.name}
+                        onSelect={() => handleSelectTag(tag)}
+                        className="cursor-pointer"
+                      >
+                        <Plus className="mr-2 h-4 w-4" />
+                        {tag.name}
+                      </CommandItem>
+                    ))}
+                    {query.trim() && !availableTags.find(tag => 
+                      tag.name.toLowerCase() === query.trim().toLowerCase()
+                    ) && (
+                      <CommandItem
+                        value={query}
+                        onSelect={() => addTag(query)}
+                        className="cursor-pointer border-t"
+                      >
+                        <Plus className="mr-2 h-4 w-4" />
+                        Create "{query}"
+                      </CommandItem>
+                    )}
+                  </CommandGroup>
+                )}
+              </CommandList>
+            </Command>
+          </PopoverPrimitive.Content>
+        </PopoverPrimitive.Portal>
+      </PopoverPrimitive.Root>
     </div>
   );
 }

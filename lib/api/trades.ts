@@ -46,7 +46,7 @@ export const tradesApi = {
    * Delete multiple trades
    */
   deleteMultipleTrades: async (ids: string[]): Promise<{ message: string }> => {
-    const response = await axiosInstance.delete('/trades/delete-multiple', { data: { ids } });
+    const response = await axiosInstance.delete('/trades/delete-multiple', { data: { trade_ids: ids } });
     return response.data;
   },
 };

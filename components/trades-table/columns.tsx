@@ -2,8 +2,8 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
-import { MoreHorizontal, Edit, Trash2, Copy, Eye, TrendingUp, Table as TableIcon } from 'lucide-react';
+import { fromZonedTime, toZonedTime } from 'date-fns-tz';
+import { Edit, Trash2, Copy, Eye, TrendingUp, Table as TableIcon, MoreVertical } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,17 +18,23 @@ import {
 
 import { Trade } from '@/types';
 import { DataTableColumnHeader } from './data-table-column-header';
-import { getStatusColor, getSideColor, formatCurrency } from '@/data/trades-config';
+import { getStatusColor, getSideColor, formatCurrency, datetimeWithNulls } from '@/data/trades-config';
+import EditableEntryCell from './cells/editable-entry';
+import EditableStopLossCell from './cells/editable-stop-loss';
+import EditableTargetCell from './cells/editable-target';
+import EditableTimeframeCell from './cells/editable-timeframe';
+import EditableScoreCell from './cells/editable-score';
 import { cn } from '@/lib/utils';
 
 interface TradesColumnsProps {
-  onEdit: (trade: Trade) => void;
+  onEdit: (id: string, field: string, value: any) => void;
   onDelete: (trade: Trade) => void;
   onView: (trade: Trade) => void;
-  onDuplicate: (trade: Trade) => void;
+  onDuplicate: (trade: Trade) => void
 }
 
-const timezone = 'Asia/Kolkata';
+const fromTimezone = 'UTC';
+const toTimezone = 'Asia/Kolkata';
 
 export const createTradesColumns = ({
   onEdit,
@@ -69,7 +75,7 @@ export const createTradesColumns = ({
         const trade = row.original;
     
         return (
-          <div className="flex items-center justify-between ml-2 group">
+          <div className="flex items-center justify-between ml-2 group min-w-48">
             {/* Left side: default and hover states */}
             <div className="flex items-center gap-2 relative">
               {/* Default state: Symbol + Ticker Name */}
@@ -86,7 +92,8 @@ export const createTradesColumns = ({
     
               {/* Hover state: Symbol + Icons */}
               <div className="absolute left-0 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="font-normal text-xs text-primary hover:text-primary hover:underline transition cursor-pointer underline-offset-2">
+                <span className="font-normal text-xs text-primary hover:text-primary hover:underline transition cursor-pointer underline-offset-2"
+                onClick={() => onView(trade)}>
                   {trade.symbol}
                 </span>
                 <a
@@ -163,15 +170,16 @@ export const createTradesColumns = ({
     {
       accessorKey: 'entry',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Entry" className="justify-end -mx-2 " />
+        <DataTableColumnHeader column={column} title="Entry" className="justify-end -mx-2" />
       ),
       cell: ({ row }) => {
-        const entry = row.getValue('entry') as number;
+        const trade = row.original;
         return (
           <div className="flex flex-col items-end">
-            <span className="font-normal text-xs text-primary hover:text-primary">
-              {formatCurrency(entry)}
-            </span>
+            <EditableEntryCell
+              value={trade.entry}
+              onSave={(value) => onEdit(trade.id, 'entry', value)}
+            />
           </div>
         );
       },
@@ -198,16 +206,13 @@ export const createTradesColumns = ({
         <DataTableColumnHeader column={column} title="Stop Loss" className="justify-end -mx-2" />
       ),
       cell: ({ row }) => {
-        const stoploss = row.getValue('stoploss') as number;
-        return stoploss ? (
+        const trade = row.original;
+        return (
           <div className="flex flex-col items-end">
-            <span className="font-normal text-xs text-rose-700 hover:text-rose-500">
-              {formatCurrency(stoploss)}
-            </span>
-          </div>
-        ) : (
-          <div className="flex flex-col items-end">
-            <span className="text-primary"></span>
+            <EditableStopLossCell
+              value={trade.stoploss}
+              onSave={(value) => onEdit(trade.id, 'stoploss', value)}
+            />
           </div>
         );
       },
@@ -234,16 +239,13 @@ export const createTradesColumns = ({
         <DataTableColumnHeader column={column} title="Target" className="justify-end -mx-2" />
       ),
       cell: ({ row }) => {
-        const target = row.getValue('target') as number;
-        return target ? (
+        const trade = row.original;
+        return (
           <div className="flex flex-col items-end">
-            <span className="font-normal text-xs text-emerald-700 hover:text-emerald-500">
-              {formatCurrency(target)}
-            </span>
-          </div>
-        ) : (
-          <div className="flex flex-col items-end">
-            <span className="text-primary"></span>
+            <EditableTargetCell
+              value={trade.target}
+              onSave={(value) => onEdit(trade.id, 'target', value)}
+            />
           </div>
         );
       },
@@ -270,16 +272,13 @@ export const createTradesColumns = ({
         <DataTableColumnHeader column={column} title="Timeframe" className="justify-end -mx-2" />
       ),
       cell: ({ row }) => {
-        const timeframe = row.getValue('timeframe') as string;
-        return timeframe ? (
+        const trade = row.original;
+        return (
           <div className="flex flex-col items-end">
-            <Badge variant="secondary" className="text-[10px] font-normal rounded text-primary hover:text-primary px-1 py-0.5">
-              {timeframe}
-            </Badge>
-          </div>
-        ) : (
-          <div className="flex flex-col items-end">
-            <span className="text-primary"></span>
+            <EditableTimeframeCell
+              value={trade.timeframe}
+              onSave={(value) => onEdit(trade.id, 'timeframe', value)}
+            />
           </div>
         );
       },
@@ -290,25 +289,24 @@ export const createTradesColumns = ({
     {
       accessorKey: 'tags',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Tags" className="text-muted-foreground hover:text-primary text-xs font-normal -mx-2 text-center" />
+        <DataTableColumnHeader column={column} title="#Tags" className="text-muted-foreground hover:text-primary text-xs font-normal -mx-2 text-center" />
       ),
       cell: ({ row }) => {
+        const trade = row.original;
         const tags = row.getValue('tags') as Array<{ name: string }>;
         return (
-          <div className="flex flex-wrap gap-1 max-w-[200px] items-end">
+          <div className="flex flex-wrap max-w-[200px] items-center justify-center" onClick={() => onView(trade)}>
             {tags?.length > 0 ? (
               tags.slice(0, 1).map((tag, index) => (
-                <Badge key={index} variant="outline" className="text-xs">
-                  {tag.name}
+                <Badge key={index} variant="secondary" className="text-xs rounded-md cursor-pointer hover:bg-background">
+                  {tag.name.length > 6 ? tag.name.slice(0, 6) + '..' : tag.name}
+                  {tags?.length > 1 && (
+                    <span className="text-primary text-xs hover:text-primary">&nbsp;+{tags.length - 1}</span>
+                  )}
                 </Badge>
               ))
             ) : (
               <span className="text-primary text-xs hover:text-primary">No tags</span>
-            )}
-            {tags?.length > 1 && (
-              <Badge variant="outline" className="text-xs">
-                +{tags.length - 1}
-              </Badge>
             )}
           </div>
         );
@@ -321,18 +319,19 @@ export const createTradesColumns = ({
         <DataTableColumnHeader column={column} title="Score" className="justify-end -mx-2" />
       ),
       cell: ({ row }) => {
-        const score = row.getValue('score') as number;
-        return score ? (
+        const trade = row.original;
+        return (
           <div className="flex flex-col items-end">
-            <span className="text-primary hover:text-primary font-normal text-xs">
-              {score} / 10
-            </span>
-          </div>
-        ) : (
-          <div className="flex flex-col items-end">
-            <span className="text-primary"></span>
+            <EditableScoreCell
+              value={trade.score}
+              onSave={(value) => onEdit(trade.id, 'score', value)}
+            />
           </div>
         );
+      },
+      filterFn: (row, id, value) => {
+        const score: number = row.getValue(id)
+        return value.includes(score.toString());
       },
     },
     {
@@ -405,11 +404,12 @@ export const createTradesColumns = ({
         return (
           <div className="flex flex-col items-end">
             <span className="text-primary hover:text-primary text-xs font-normal">
-              {format(toZonedTime(new Date(date), timezone), 'MMM dd • HH:mm')}
+              {format(toZonedTime(fromZonedTime(date, fromTimezone), toTimezone), 'MMM dd • HH:mm')}
             </span>
           </div>
         );
       },
+      sortingFn: datetimeWithNulls,
     },
     {
       accessorKey: 'edited_at',
@@ -421,11 +421,12 @@ export const createTradesColumns = ({
         return date && (
           <div className="flex flex-col items-end">
             <span className="text-primary hover:text-primary text-xs font-normal">
-              {format(toZonedTime(new Date(date), timezone), 'MMM dd • HH:mm')}
+              {format(toZonedTime(fromZonedTime(date, fromTimezone), toTimezone), 'MMM dd • HH:mm')}
             </span>
           </div>
         );
       },
+      sortingFn: datetimeWithNulls,
     },
     {
       accessorKey: 'status_updated_at',
@@ -437,11 +438,12 @@ export const createTradesColumns = ({
         return date && (
           <div className="flex flex-col items-end">
             <span className="text-primary hover:text-primary text-xs font-normal">
-              {format(toZonedTime(new Date(date), timezone), 'MMM dd • HH:mm')}
+              {format(toZonedTime(fromZonedTime(date, fromTimezone), toTimezone), 'MMM dd • HH:mm')}
             </span>
           </div>
         );
       },
+      sortingFn: datetimeWithNulls,
     },
     {
       id: 'actions',
@@ -455,27 +457,27 @@ export const createTradesColumns = ({
                 variant="ghost"
                 className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
               >
-                <MoreHorizontal className="h-4 w-4 text-primary hover:text-primary text-xs font-normal" />
+                <MoreVertical className="h-4 w-4 text-primary hover:text-primary text-xs font-normal" />
                 <span className="sr-only">Open menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-              <DropdownMenuItem onClick={() => onView(trade)}>
+              <DropdownMenuItem onClick={() => onView(trade)} className="text-xs font-normal text-muted-foreground">
                 <Eye className="mr-2 h-4 w-4" />
                 View
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onEdit(trade)}>
+              <DropdownMenuItem onClick={() => onEdit(trade.id, 'edit', trade)} className="text-xs font-normal text-muted-foreground">
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onDuplicate(trade)}>
+              <DropdownMenuItem onClick={() => onDuplicate(trade)} className="text-xs font-normal text-muted-foreground">
                 <Copy className="mr-2 h-4 w-4" />
                 Duplicate
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => onDelete(trade)}
-                className="text-destructive"
+                className="text-xs font-normal text-rose-700"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete

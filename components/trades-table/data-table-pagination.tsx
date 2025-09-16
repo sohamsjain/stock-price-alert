@@ -23,14 +23,18 @@ export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-between px-2">
+    <div className="relative flex items-center px-2">
       <div className="flex-1 text-xs text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} alert(s) selected.
+        {table.getFilteredRowModel().rows.length} selected
+      </div>
+      <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground">
+        Start typing to create a new trade or press{' '}
+        <kbd className="px-1 py-0.5 text-xs bg-muted rounded">Ctrl</kbd> + <kbd className="px-1 py-0.5 text-xs bg-muted rounded">/</kbd>
       </div>
       <div className="flex items-center space-x-2 lg:space-x-2">
         <div className="flex items-center space-x-2">
-          <p className="text-xs font-normal text-muted-foreground">Alerts per page</p>
+          <p className="text-xs font-normal text-muted-foreground">Per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {

@@ -1,3 +1,4 @@
+import { SortingFn } from '@tanstack/react-table';
 import { TrendingUp, TrendingDown, Play, CheckCircle, XCircle, BarChart, LineChart, Target } from 'lucide-react';
 
 export const tradeStatuses = [
@@ -75,7 +76,7 @@ export const getStatusColor = (status: string) => {
     case 'Entry':
       return 'text-green-600 bg-green-100 dark:text-emerald-700 dark:bg-emerald-900/10';
     case 'Stop Loss':
-      return 'text-red-600 bg-red-100 dark:text-rose-800 dark:bg-rose-900/10';
+      return 'text-red-600 bg-red-100 dark:text-rose-700 dark:bg-rose-900/10';
     case 'Target':
       return 'text-yellow-600 bg-yellow-100 dark:text-yellow-600 dark:bg-yellow-900/20';
     default:
@@ -88,7 +89,7 @@ export const getSideColor = (side: string) => {
     case 'BUY':
       return 'text-green-600 bg-green-100 dark:text-emerald-700 dark:bg-emerald-900/10';
     case 'SELL':
-      return 'text-red-600 bg-red-100 dark:text-rose-800 dark:bg-rose-900/10';
+      return 'text-red-600 bg-red-100 dark:text-rose-700 dark:bg-rose-900/10';
     default:
       return 'text-gray-600 bg-gray-100 dark:text-gray-600 dark:bg-gray-900/20';
   }
@@ -110,3 +111,19 @@ export const formatPercent = (value: number) => {
     maximumFractionDigits: 2,
   }).format(value / 100);
 };
+
+
+export const datetimeWithNulls: SortingFn<any> = (rowA, rowB, columnId) => {
+  const a = rowA.getValue(columnId) as string | null
+  const b = rowB.getValue(columnId) as string | null
+
+  // handle nulls first
+  if (!a && !b) return 0
+  if (!a) return 1   // nulls go to bottom
+  if (!b) return -1
+
+  const dateA = new Date(a).getTime()
+  const dateB = new Date(b).getTime()
+
+  return dateA === dateB ? 0 : dateA > dateB ? 1 : -1
+}

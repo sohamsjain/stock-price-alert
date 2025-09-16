@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/table';
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
+import { Trade } from '@/types';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -52,8 +53,6 @@ export function DataTable<TData, TValue>({
     risk_per_unit: false,
     reward_per_unit: false,
     risk_reward_ratio: false,
-
-    
   });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([
@@ -80,15 +79,11 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    initialState: {
-      pagination: {
-        pageSize: 10,
-      },
-    },
   });
 
+  const selectedRows = table.getFilteredSelectedRowModel().rows.map(row => row.original);
+
   const handleDeleteSelected = () => {
-    const selectedRows = table.getFilteredSelectedRowModel().rows.map(row => row.original);
     onDeleteSelected(selectedRows);
     setRowSelection({});
   };
@@ -128,7 +123,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  className="hover:bg-muted/50 group"
+                  className="hover:bg-muted/40 group"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -153,7 +148,6 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      
       <DataTablePagination table={table} />
     </div>
   );
