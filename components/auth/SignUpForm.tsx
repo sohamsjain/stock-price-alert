@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Link from 'next/link';
-import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Phone } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +19,7 @@ import { RegisterCredentials } from '@/types';
 const signUpSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.email('Please enter a valid email address'),
+  phone_number: z.string().min(10, 'Phone number must be at least 10 characters'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   confirmPassword: z.string().min(6, 'Please confirm your password'),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -47,7 +48,7 @@ export const SignUpForm = () => {
     const success = await registerUser(registerData as RegisterCredentials);
 
     if (success) {
-      router.push('/dash');
+      router.push('/dash/trades');
     }
   };
 
@@ -83,7 +84,7 @@ export const SignUpForm = () => {
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Enter your full name"
+                  placeholder="Full Name"
                   className="pl-10 border-0"
                   {...register('name')}
                   disabled={isLoading}
@@ -100,7 +101,7 @@ export const SignUpForm = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="username@example.com"
                   className="pl-10 border-0"
                   {...register('email')}
                   disabled={isLoading}
@@ -110,6 +111,23 @@ export const SignUpForm = () => {
                 <p className="text-sm text-destructive">{errors.email.message}</p>
               )}
             </div>
+            
+            <div className="space-y-2">
+              <div className="relative">
+                <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="phone-number"
+                  type="phone"
+                  placeholder="+91 9876543210"
+                  className="pl-10 border-0"
+                  {...register('phone_number')}
+                  disabled={isLoading}
+                />
+              </div>
+              {errors.phone_number && (
+                <p className="text-sm text-destructive">{errors.phone_number.message}</p>
+              )}
+            </div>
 
             <div className="space-y-2">
               <div className="relative">
@@ -117,7 +135,7 @@ export const SignUpForm = () => {
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Create a password"
+                  placeholder="********"
                   className="pl-10 pr-10 border-0"
                   {...register('password')}
                   disabled={isLoading}
@@ -148,7 +166,7 @@ export const SignUpForm = () => {
                 <Input
                   id="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="Confirm your password"
+                  placeholder="********"
                   className="pl-10 pr-10 border-0"
                   {...register('confirmPassword')}
                   disabled={isLoading}

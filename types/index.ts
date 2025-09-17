@@ -23,6 +23,7 @@ export interface LoginCredentials {
 export interface RegisterCredentials {
   name: string;
   email: string;
+  phone_number: string;
   password: string;
 }
 
