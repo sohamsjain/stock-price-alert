@@ -10,8 +10,7 @@ import { Eye, EyeOff, Mail, Lock, User, Phone } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { useAuth } from '@/hooks/useAuth';
 import { RegisterCredentials } from '@/types';
@@ -55,12 +54,6 @@ export const SignUpForm = () => {
   return (
     <>
       <Card className="w-full max-w-md mx-auto border-0 shadow-2xl">
-        {/* <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Create account</CardTitle>
-          <CardDescription className="text-center">
-            Signup with your Google account
-          </CardDescription>
-        </CardHeader> */}
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">

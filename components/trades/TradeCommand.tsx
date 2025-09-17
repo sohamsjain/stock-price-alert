@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Search, TrendingUp, TrendingDown, EditIcon, X, Plus } from 'lucide-react';
+import {TrendingUp, TrendingDown, EditIcon, X} from 'lucide-react';
 import { toast } from 'sonner';
 import clsx from 'clsx';
 import {

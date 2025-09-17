@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Check, Clock, TrendingUp, TrendingDown, EditIcon } from 'lucide-react';
+import { Check, Clock, TrendingUp} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -11,7 +11,6 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
@@ -21,7 +20,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { TagInput } from '@/components/ui/TagInput';
 
 import { Trade } from '@/types';
 import { TradeUpdateFormData, tradeUpdateFormSchema } from '@/lib/validations/trade';
