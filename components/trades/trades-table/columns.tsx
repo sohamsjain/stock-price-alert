@@ -18,7 +18,7 @@ import {
 
 import { Trade } from '@/types';
 import { DataTableColumnHeader } from './data-table-column-header';
-import { getStatusColor, getSideColor, formatCurrency, datetimeWithNulls } from '@/data/trades-config';
+import { getStatusColor, getSideColor, formatCurrency, datetimeWithNulls } from '@/config/trades-config';
 import EditableEntryCell from './cells/editable-entry';
 import EditableStopLossCell from './cells/editable-stop-loss';
 import EditableTargetCell from './cells/editable-target';
@@ -73,15 +73,18 @@ export const createTradesColumns = ({
       ),
       cell: ({ row }) => {
         const trade = row.original;
-    
+
         return (
           <div className="flex items-center justify-between ml-2 group min-w-48">
             {/* Left side: default and hover states */}
             <div className="flex items-center gap-2 relative">
               {/* Default state: Symbol + Ticker Name */}
-              <div className="flex flex-col transition-opacity duration-200 group-hover:opacity-0">
+              <div className="flex flex-col transition-opacity duration-200 group-hover:opacity-0 ">
                 <span className="font-normal text-xs text-primary">
                   {trade.symbol}
+                  <span className="font-normal text-[10px] text-primary/70 hover:text-primary bg-primary/10 px-1 rounded mx-1">
+                    {trade.ticker?.exchange}
+                  </span>
                 </span>
                 <span className="font-normal text-xs text-primary/70">
                   {(trade.ticker?.name ?? "Unknown")
@@ -89,11 +92,11 @@ export const createTradesColumns = ({
                     .replace(/\b\w/g, (char) => char.toUpperCase())}
                 </span>
               </div>
-    
+
               {/* Hover state: Symbol + Icons */}
               <div className="absolute left-0 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="font-normal text-xs text-primary hover:text-primary hover:underline transition cursor-pointer underline-offset-2"
-                onClick={() => onView(trade)}>
+                  onClick={() => onView(trade)}>
                   {trade.symbol}
                 </span>
                 <a
@@ -114,14 +117,11 @@ export const createTradesColumns = ({
                 </a>
               </div>
             </div>
-    
+
             {/* Right side: Last Price + Exchange (unchanged) */}
             <div className="flex flex-col items-end">
-              <span className="font-normal text-xs text-primary hover:text-primary">
+              <span className="font-normal text-sm text-primary hover:text-primary">
                 {formatCurrency(trade.last_price)}
-              </span>
-              <span className="font-normal text-xs text-primary/70 hover:text-primary">
-                {trade.ticker?.exchange}
               </span>
             </div>
           </div>

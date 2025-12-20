@@ -1,20 +1,20 @@
 import { Input } from "@/components/ui/input";
-import { formatCurrency } from "@/data/trades-config";
+import { formatCurrency } from "@/config/trades-config";
 import { useEffect, useRef, useState } from "react";
 
-interface EditableEntryCellProps {
-    value: number | null;
+interface EditableTargetCellProps {
+    value: number | null | undefined;
     onSave: (value: number) => void;
     placeholder?: string;
     formatValue?: (value: number) => string;
 }
 
-function EditableEntryCell({
+function EditableTargetCell({
     value,
     onSave,
     placeholder = "0.00",
     formatValue = (v: number) => formatCurrency(v)
-}: EditableEntryCellProps) {
+}: EditableTargetCellProps) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState('');
@@ -64,22 +64,22 @@ function EditableEntryCell({
 
     if (isEditing) {
         return (
-                <Input
-                    ref={inputRef}
-                    type="text"
-                    value={editValue}
-                    onChange={(e) => setEditValue(e.target.value)}
-                    onBlur={handleSave}
-                    onKeyDown={handleKeyDown}
-                className="py-1 px-2 -mx-2 h-6 max-w-18 !text-xs rounded focus-visible:ring-0 text-right text-primary selection:bg-muted-foreground/10 selection:text-primary"
-                    placeholder={placeholder}
-                />
+            <Input
+                ref={inputRef}
+                type="text"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                onBlur={handleSave}
+                onKeyDown={handleKeyDown}
+                className="py-1 px-2 -mx-2 h-6 max-w-18 !text-xs rounded focus-visible:ring-0 text-right text-emerald-700 selection:bg-muted-foreground/10 selection:text-emerald-700"
+                placeholder={placeholder}
+            />
         );
     }
 
     return (
         <div onClick={handleEdit} className="hover:bg-muted/70 py-1 px-2 -mx-2 rounded">
-            <span className="font-normal text-xs text-primary hover:text-primary/80">
+            <span className="font-normal text-sm text-emerald-700 hover:text-emerald-700/80">
                 {value ? formatValue(value) : '---'}
             </span>
         </div>
@@ -87,4 +87,4 @@ function EditableEntryCell({
 }
 
 
-export default EditableEntryCell;
+export default EditableTargetCell;

@@ -12,7 +12,7 @@ export default function HomePage() {
   useEffect(() => {
     if (!isLoading) {
       if (isAuthenticated) {
-        router.push('/dash/trades');
+        router.push('/alerts');
       } else {
         router.push('/auth/signin');
       }

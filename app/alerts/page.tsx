@@ -1,11 +1,11 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { SiteHeader } from "@/components/site-header"
+import { AppSidebar } from "@/components/layout/app-sidebar"
+import { SiteHeader } from "@/components/layout/site-header"
 import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
-import Tasks from "@/components/tasks-table/tasks";
+import { TradesPage } from "@/components/trades/TradesPage";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 
 export default function Page() {
@@ -20,11 +20,11 @@ export default function Page() {
         }
       >
         <AppSidebar variant="inset" />
-        <SidebarInset>
+        <SidebarInset className="overflow-hidden">
           <SiteHeader />
           <div className="flex flex-1 flex-col">
             <div className="px-4 lg:px-6 space-y-8 py-4 md:py-6">
-              <Tasks />
+              <TradesPage />
             </div>
           </div>
         </SidebarInset>

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DataTableViewOptions } from './data-table-view-options';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
-import { tradeStatuses, tradeSides, timeframes } from '@/data/trades-config';
+import { tradeStatuses, tradeSides, timeframes } from '@/config/trades-config';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;

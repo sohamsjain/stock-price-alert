@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TradingApp - Professional Trading Platform",
-  description: "Manage your trades, analyze performance, and grow your portfolio with our comprehensive trading platform.",
+  title: "Stock Price Alert",
+  description: "Stock Price Alerts delivered via WhatsApp. Set Entry, Stop Loss and Target levels and get notified via WhatsApp.",
 };
 
 export default function RootLayout({

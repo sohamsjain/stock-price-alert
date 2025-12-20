@@ -27,8 +27,8 @@ export const AuthGuard = ({
         sessionStorage.setItem('redirectAfterLogin', pathname);
         router.push(redirectTo);
       } else if (!requireAuth && isAuthenticated) {
-        // If user is authenticated and trying to access auth pages, redirect to dashboard
-        router.push('/dash/trades');
+        // If user is authenticated and trying to access auth pages, redirect to alerts
+        router.push('/alerts');
       }
     }
   }, [isAuthenticated, isLoading, requireAuth, router, pathname, redirectTo]);

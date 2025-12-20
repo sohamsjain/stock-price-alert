@@ -29,7 +29,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { tickersApi } from '@/lib/api/tickers';
 import { Ticker, Timeframe } from '@/types';
 import { TradeCreateFormData } from '@/lib/validations/trade';
-import { formatCurrency, timeframes } from '@/data/trades-config';
+import { formatCurrency, timeframes } from '@/config/trades-config';
 
 interface TradeCommandProps {
     open: boolean;

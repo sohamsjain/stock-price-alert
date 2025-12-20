@@ -1,20 +1,20 @@
 import { Input } from "@/components/ui/input";
-import { formatCurrency } from "@/data/trades-config";
+import { formatCurrency } from "@/config/trades-config";
 import { useEffect, useRef, useState } from "react";
 
-interface EditableStopLossCellProps {
-    value: number | null | undefined;
+interface EditableEntryCellProps {
+    value: number | null;
     onSave: (value: number) => void;
     placeholder?: string;
     formatValue?: (value: number) => string;
 }
 
-function EditableStopLossCell({
+function EditableEntryCell({
     value,
     onSave,
     placeholder = "0.00",
     formatValue = (v: number) => formatCurrency(v)
-}: EditableStopLossCellProps) {
+}: EditableEntryCellProps) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState('');
@@ -64,22 +64,22 @@ function EditableStopLossCell({
 
     if (isEditing) {
         return (
-            <Input
-                ref={inputRef}
-                type="text"
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                onBlur={handleSave}
-                onKeyDown={handleKeyDown}
-                className="py-1 px-2 -mx-2 h-6 max-w-18 !text-xs rounded focus-visible:ring-0 text-right text-rose-700 selection:bg-muted-foreground/10 selection:text-rose-700"
-                placeholder={placeholder}
-            />
+                <Input
+                    ref={inputRef}
+                    type="text"
+                    value={editValue}
+                    onChange={(e) => setEditValue(e.target.value)}
+                    onBlur={handleSave}
+                    onKeyDown={handleKeyDown}
+                className="py-1 px-2 -mx-2 h-6 max-w-18 !text-xs rounded focus-visible:ring-0 text-right text-primary selection:bg-muted-foreground/10 selection:text-primary"
+                    placeholder={placeholder}
+                />
         );
     }
 
     return (
         <div onClick={handleEdit} className="hover:bg-muted/70 py-1 px-2 -mx-2 rounded">
-            <span className="font-normal text-xs text-rose-700 hover:text-rose-700/80">
+            <span className="font-normal text-sm text-primary hover:text-primary/80">
                 {value ? formatValue(value) : '---'}
             </span>
         </div>
@@ -87,4 +87,4 @@ function EditableStopLossCell({
 }
 
 
-export default EditableStopLossCell;
+export default EditableEntryCell;

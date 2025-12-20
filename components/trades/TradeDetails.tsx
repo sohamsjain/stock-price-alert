@@ -23,7 +23,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 import { Trade } from '@/types';
 import { TradeUpdateFormData, tradeUpdateFormSchema } from '@/lib/validations/trade';
-import { tradeSides, timeframes, formatCurrency, getStatusColor, getSideColor } from '@/data/trades-config';
+import { tradeSides, timeframes, formatCurrency, getStatusColor, getSideColor } from '@/config/trades-config';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';

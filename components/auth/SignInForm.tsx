@@ -45,7 +45,7 @@ export const SignInForm = () => {
         sessionStorage.removeItem('redirectAfterLogin');
         router.push(redirectUrl);
       } else {
-        router.push('/dash/trades');
+        router.push('/alerts');
       }
     }
   };

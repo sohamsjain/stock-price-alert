@@ -1,17 +1,20 @@
 import { Input } from "@/components/ui/input";
+import { formatCurrency } from "@/config/trades-config";
 import { useEffect, useRef, useState } from "react";
 
-interface EditableScoreCellProps {
+interface EditableStopLossCellProps {
     value: number | null | undefined;
     onSave: (value: number) => void;
     placeholder?: string;
+    formatValue?: (value: number) => string;
 }
 
-function EditableScoreCell({
+function EditableStopLossCell({
     value,
     onSave,
     placeholder = "0.00",
-}: EditableScoreCellProps) {
+    formatValue = (v: number) => formatCurrency(v)
+}: EditableStopLossCellProps) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState('');
@@ -63,28 +66,25 @@ function EditableScoreCell({
         return (
             <Input
                 ref={inputRef}
-                type="number"
+                type="text"
                 value={editValue}
                 onChange={(e) => setEditValue(e.target.value)}
                 onBlur={handleSave}
                 onKeyDown={handleKeyDown}
-                className="py-1 px-2 h-6 max-w-12 !text-xs rounded focus-visible:ring-0 text-right text-primary selection:bg-muted-foreground/10 selection:text-primary text-left"
+                className="py-1 px-2 -mx-2 h-6 max-w-18 !text-xs rounded focus-visible:ring-0 text-right text-rose-700 selection:bg-muted-foreground/10 selection:text-rose-700"
                 placeholder={placeholder}
-                min={0}
-                max={10}
-                step={1}
             />
         );
     }
 
     return (
         <div onClick={handleEdit} className="hover:bg-muted/70 py-1 px-2 -mx-2 rounded">
-            <span className="font-normal text-xs text-primary hover:text-primary/80">
-                {value} / 10
+            <span className="font-normal text-sm text-rose-700 hover:text-rose-700/80">
+                {value ? formatValue(value) : '---'}
             </span>
         </div>
     );
 }
 
 
-export default EditableScoreCell;
+export default EditableStopLossCell;

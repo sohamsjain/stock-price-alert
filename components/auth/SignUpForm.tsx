@@ -47,7 +47,7 @@ export const SignUpForm = () => {
     const success = await registerUser(registerData as RegisterCredentials);
 
     if (success) {
-      router.push('/dash/trades');
+      router.push('/alerts');
     }
   };
 

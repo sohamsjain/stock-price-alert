@@ -96,7 +96,7 @@ export function DataTable<TData, TValue>({
         onDeleteSelected={handleDeleteSelected}
         selectedCount={table.getFilteredSelectedRowModel().rows.length}
       />
-      
+
       <div className="rounded-md border scrollbar-slate">
         <Table>
           <TableHeader>
@@ -108,9 +108,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -141,7 +141,10 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No trades found.
+                  <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground">
+                    Start typing to create a new trade or press{' '}
+                    <kbd className="px-1 py-0.5 text-xs bg-muted rounded">Ctrl</kbd> + <kbd className="px-1 py-0.5 text-xs bg-muted rounded">/</kbd>
+                  </div>
                 </TableCell>
               </TableRow>
             )}

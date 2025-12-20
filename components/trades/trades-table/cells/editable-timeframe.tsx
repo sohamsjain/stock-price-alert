@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { timeframes } from "@/data/trades-config";
+import { timeframes } from "@/config/trades-config";
 
 interface EditableTimeframeCellProps {
     value: string | null | undefined;
@@ -43,7 +43,7 @@ function EditableTimeframeCell({
     return (
         <div onClick={() => setIsEditing(true)}>
             {value ? (
-                <Badge variant="secondary" className="text-xs font-normal rounded text-primary hover:text-primary hover:bg-primary/20 px-2 py-1 cursor-pointer">
+                <Badge variant="secondary" className="text-sm font-normal rounded text-primary hover:text-primary hover:bg-primary/20 px-2 py-1 cursor-pointer">
                     {value}
                 </Badge>
             ) : (

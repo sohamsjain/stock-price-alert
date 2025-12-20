@@ -16,8 +16,8 @@ import {
 
 import { Trade } from '@/types';
 import { useTradesStore } from '@/store/tradesStore';
-import { DataTable } from '@/components/trades-table/data-table';
-import { createTradesColumns } from '@/components/trades-table/columns';
+import { DataTable } from '@/components/trades/trades-table/data-table';
+import { createTradesColumns } from '@/components/trades/trades-table/columns';
 import { TradeDetails } from './TradeDetails';
 import { TradeCommand } from './TradeCommand';
 import { TradeCreateFormData, TradeUpdateFormData } from '@/lib/validations/trade';
