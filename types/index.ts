@@ -6,6 +6,9 @@ export interface User {
   phone_number?: string;
   is_admin: boolean;
   created_at: string;
+  telegram_enabled: boolean;
+  telegram_username?: string;
+  telegram_connected_at?: string;
 }
 
 export interface AuthResponse {

@@ -10,7 +10,7 @@ import {
   IconUsers,
   IconBell,
 } from "@tabler/icons-react"
-
+import Link from "next/link"
 import { TrendingUp } from "lucide-react"
 
 import { NavMain } from "@/components/layout/nav-main"
@@ -57,7 +57,7 @@ const data = {
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: IconSettings,
     },
     {
@@ -78,10 +78,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link href="/alerts">
                 <TrendingUp className="!size-5" />
                 <span className="text-base font-semibold">Stock Price Alert</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
