@@ -44,6 +44,9 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
     // Hide some columns by default on smaller screens
+    timeframe: false,
+    tags: false,
+    score: false,
     created_at: false,
     edited_at: false,
     status_updated_at: false,
